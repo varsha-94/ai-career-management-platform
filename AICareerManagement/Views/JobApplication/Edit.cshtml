@@ -1,0 +1,59 @@
+﻿
+@model AICareerManagement.Models.JobApplicationModel
+
+@{
+    ViewBag.Title = "Edit Job Application";
+}
+
+<div class="container mt-4">
+    <h2>Edit Job Application</h2>
+
+    @using (Html.BeginForm("Edit", "JobApplication",
+        FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ApplicationId)
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.CompanyName)
+            @Html.TextBoxFor(m => m.CompanyName,
+                     new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CompanyName,
+                     "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.JobTitle)
+            @Html.TextBoxFor(m => m.JobTitle,
+                     new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.JobTitle,
+                     "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.JobDescription)
+            @Html.TextAreaFor(m => m.JobDescription,
+                     new { @class = "form-control", rows = 4 })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.ApplicationStatus)
+            @Html.DropDownListFor(m => m.ApplicationStatus,
+                     new SelectList(new[]
+                     {
+                    "Applied", "Interview", "Selected",
+                    "Rejected", "On Hold"
+                         }, Model.ApplicationStatus),
+                     new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ApplicationStatus,
+                     "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Update Application
+        </button>
+
+        @Html.ActionLink("Back", "Index", null,
+                 new { @class = "btn btn-secondary" })
+    }
+</div>
