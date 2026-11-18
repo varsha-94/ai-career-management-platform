@@ -22,13 +22,36 @@ namespace AICareerManagement.Controllers
         }
 
         // GET: JobApplication
-        public ActionResult Index()
-        {
-            if (!LoggedInUserId.HasValue)
-                return RedirectToAction("Login", "Account");
 
-            var applications =
-                dal.GetApplications(LoggedInUserId.Value);
+        public ActionResult Index(string searchTerm, string applicationStatus)
+        {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = Convert.ToInt32(Session["UserId"]);
+
+            // Allow only supported application statuses
+            string[] validStatuses =
+            {
+        "Applied", "Interview", "Selected", "Rejected", "On Hold"
+    };
+
+            if (!string.IsNullOrWhiteSpace(applicationStatus) &&
+                !validStatuses.Contains(applicationStatus))
+            {
+                applicationStatus = null;
+            }
+
+            var applications = dal.SearchApplications(
+                userId,
+                searchTerm,
+                applicationStatus
+            );
+
+            ViewBag.SearchTerm = searchTerm;
+            ViewBag.ApplicationStatus = applicationStatus;
 
             return View(applications);
         }

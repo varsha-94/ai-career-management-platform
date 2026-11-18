@@ -143,5 +143,55 @@ namespace AICareerManagement.DAL
         }
 
 
+        public List<JobApplicationModel> SearchApplications(
+            int userId,
+            string searchTerm,
+            string applicationStatus)
+        {
+            List<JobApplicationModel> applications =
+                new List<JobApplicationModel>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(
+                "SP_SearchJobApplications", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = userId;
+
+                cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, 150).Value =
+                    string.IsNullOrWhiteSpace(searchTerm)
+                        ? (object)DBNull.Value
+                        : searchTerm.Trim();
+
+                cmd.Parameters.Add("@ApplicationStatus",
+                    SqlDbType.NVarChar, 50).Value =
+                    string.IsNullOrWhiteSpace(applicationStatus)
+                        ? (object)DBNull.Value
+                        : applicationStatus.Trim();
+
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        applications.Add(new JobApplicationModel
+                        {
+                            ApplicationId = Convert.ToInt32(dr["ApplicationId"]),
+                            UserId = Convert.ToInt32(dr["UserId"]),
+                            CompanyName = dr["CompanyName"].ToString(),
+                            JobTitle = dr["JobTitle"].ToString(),
+                            JobDescription = dr["JobDescription"].ToString(),
+                            ApplicationStatus = dr["ApplicationStatus"].ToString(),
+                            AppliedDate = Convert.ToDateTime(dr["AppliedDate"])
+                        });
+                    }
+                }
+            }
+
+            return applications;
+        }
+
     }
 }
