@@ -1,0 +1,148 @@
+﻿
+@model AICareerManagement.ViewModels.DashboardViewModel
+
+@{
+    ViewBag.Title = "Career Dashboard";
+}
+<link href="@Url.Content("~/Content/Site.css")"
+      rel="stylesheet"
+      type="text/css" />
+<div class="career-dashboard">
+
+    <div class="dashboard-heading">
+        <div>
+            <h2>Career Dashboard</h2>
+            <p>Welcome back! Track your job applications and career progress.</p>
+        </div>
+
+        @Html.ActionLink(
+                 "+ Add New Application",
+                 "Create",
+                 "JobApplication",
+                 null,
+                 new { @class = "add-application-btn" })
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    <div class="stats-grid">
+
+        <div class="stat-card blue">
+            <div class="stat-icon">📁</div>
+            <div class="stat-title">Total Applications</div>
+            <div class="stat-number">@Model.TotalApplications</div>
+            <div class="stat-description">All applications</div>
+        </div>
+
+        <div class="stat-card orange">
+            <div class="stat-icon">📨</div>
+            <div class="stat-title">Applied</div>
+            <div class="stat-number">@Model.AppliedCount</div>
+            <div class="stat-description">Applications sent</div>
+        </div>
+
+        <div class="stat-card cyan">
+            <div class="stat-icon">🎤</div>
+            <div class="stat-title">Interviews</div>
+            <div class="stat-number">@Model.InterviewCount</div>
+            <div class="stat-description">Interview invitations</div>
+        </div>
+
+        <div class="stat-card green">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-title">Selected</div>
+            <div class="stat-number">@Model.SelectedCount</div>
+            <div class="stat-description">Successful applications</div>
+        </div>
+
+        <div class="stat-card red">
+            <div class="stat-icon">❌</div>
+            <div class="stat-title">Rejected</div>
+            <div class="stat-number">@Model.RejectedCount</div>
+            <div class="stat-description">Unsuccessful applications</div>
+        </div>
+
+        <div class="stat-card purple">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-title">On Hold</div>
+            <div class="stat-number">@Model.OnHoldCount</div>
+            <div class="stat-description">Awaiting updates</div>
+        </div>
+
+    </div>
+
+    <div class="recent-applications">
+
+        <div class="recent-heading">
+            <div>
+                <h3>Recent Job Applications</h3>
+                <p>Your latest job application activity</p>
+            </div>
+
+            @Html.ActionLink(
+                     "View All →",
+                     "Index",
+                     "JobApplication",
+                     null,
+                     new { @class = "view-all-link" })
+        </div>
+
+        @if (Model.RecentApplications != null &&
+             Model.RecentApplications.Any())
+        {
+            <div class="table-responsive">
+                <table class="table dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Job Title</th>
+                            <th>Status</th>
+                            <th>Applied Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.RecentApplications)
+                        {
+                            <tr>
+                                <td><strong>@item.CompanyName</strong></td>
+                                <td>@item.JobTitle</td>
+                                <td>
+                                    <span class="status-badge">
+                                        @item.ApplicationStatus
+                                    </span>
+                                </td>
+                                <td>@item.AppliedDate.ToString("dd-MMM-yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-applications">
+                <div class="empty-icon">💼</div>
+                <h4>No applications yet</h4>
+                <p>
+                    Start tracking your career journey by adding
+                    your first job application.
+                </p>
+
+                @Html.ActionLink(
+                         "Add Your First Application",
+                         "Create",
+                         "JobApplication",
+                         null,
+                         new { @class = "add-application-btn" })
+            </div>
+        }
+
+    </div>
+
+</div>

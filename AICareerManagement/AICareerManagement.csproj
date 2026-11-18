@@ -120,9 +120,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\JobApplicationController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="DAL\DashboardDAL.cs" />
     <Compile Include="DAL\JobApplicationDAL.cs" />
     <Compile Include="DAL\UserDAL.cs" />
     <Compile Include="Global.asax.cs">
@@ -132,6 +134,7 @@
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PasswordService.cs" />
+    <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
   </ItemGroup>
@@ -191,6 +194,7 @@
     <Content Include="Views\JobApplication\Index.cshtml" />
     <Content Include="Views\JobApplication\Create.cshtml" />
     <Content Include="Views\JobApplication\Edit.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".gitignore\" />
